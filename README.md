@@ -15,6 +15,23 @@ Foundry VTT용 Mongoose Traveller 2nd Edition (MGT2e) 한국어 보조 모듈.
 - **규칙 탭** — 기본 개념·기능 설명·판정·전투·우주전투·초능력·세계법규·무역·캐릭터메이킹 요약
 - **표 탭** — 24개 랜덤표 자동 굴림(D66/2D/1D/체이닝), 경력별 표 13개 직업군 아코디언
 
+Korean Assist Module for Mongoose Traveller 2nd Edition (MGT2e) for Foundry VTT.
+
+Spaceship Tab — Catalog of 32 Ships (Korean), Power Output/Usage/Respawn Calculation, Exterior/Interior Images, Shared Funds Management
+
+Traveler Tab — Drag and Add Actor, Display and Edit Attributes/Skills/Health/Armor/STR/DEX/END Damage
+
+Sector Tab — Travellermap.com Poster Integration, Drag Subsector Journal
+
+Pleasant Tab — Mission Log, Edit Player Progress
+
+Trade Tab — MGT2e Speculative Trade (Based on pp. 210–211), UWP Parsing, Broker/Supplier Checks, Chat Output, GM-Only Record Reset
+
+Rules Tab — Basic Concepts/Features/Checks/Combat/Space Combat/Psychics/World Laws/Trade/Character Creation Summary
+
+Tables Tab — Auto-rolls 24 Random Tables (D66/2D/1D/Chaining), Accordion of 13 Career Classes
+
+ 
 ## 의존성
 
 | | 이름 | 설명 |
