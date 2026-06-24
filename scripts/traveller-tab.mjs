@@ -4,7 +4,7 @@
 //   actor.system.finance.cash
 //   actor.ownership (플레이어 소유 확인용)
 
-// ── 기능 한글 번역 테이블 (traveller-chargen-sheet와 동일) ──────
+// ── 기능 한글 번역 테이블 (traveller-sheet-KR와 동일) ──────
 const SKILL_KO = {
   admin:'행정', advocate:'변호', animals:'동물', art:'예술',
   astrogation:'우주 항법', athletics:'운동', broker:'중개',
@@ -91,7 +91,7 @@ export class TravellerTab {
       const dexVal = (chars.DEX?.value ?? 0) + (chars.DEX?.augment ?? 0);
       const endVal = (chars.END?.value ?? 0) + (chars.END?.augment ?? 0);
       // 캐릭터 손상 — 우선 mgt2e 기본 시스템 characteristics.X.damage를 읽고,
-      // 없으면 traveller-chargen-sheet 플래그로 폴백
+      // 없으면 traveller-sheet-KR 플래그로 폴백 (미설치 시 무시)
       const sysChars = sys.characteristics ?? {};
       const sysDmg = {
         STR: sysChars.STR?.damage ?? null,
@@ -100,11 +100,20 @@ export class TravellerTab {
       };
       const hasSysDmg = sysDmg.STR !== null || sysDmg.DEX !== null || sysDmg.END !== null;
 
-      const dmgFlag = hasSysDmg ? {} : (actor.getFlag('traveller-chargen-sheet', 'damage') ?? {});
-      const dmg = hasSysDmg
-        ? { STR: sysDmg.STR ?? 0, DEX: sysDmg.DEX ?? 0, END: sysDmg.END ?? 0 }
-        : { STR: dmgFlag.STR ?? 0, DEX: dmgFlag.DEX ?? 0, END: dmgFlag.END ?? 0 };
-      const dmgSource = hasSysDmg ? 'system' : 'flag'; // 저장 방식 결정용
+      let dmg = { STR: 0, DEX: 0, END: 0 };
+      let dmgSource = 'system';
+      if (hasSysDmg) {
+        dmg = { STR: sysDmg.STR ?? 0, DEX: sysDmg.DEX ?? 0, END: sysDmg.END ?? 0 };
+      } else {
+        try {
+          const dmgFlag = actor.getFlag('traveller-sheet-KR', 'damage') ?? {};
+          dmg = { STR: dmgFlag.STR ?? 0, DEX: dmgFlag.DEX ?? 0, END: dmgFlag.END ?? 0 };
+          dmgSource = 'flag';
+        } catch (e) {
+          // traveller-sheet-KR 미설치 시 기본값 사용
+          dmgSource = 'system';
+        }
+      }
       const hitsMax     = strVal + dexVal + endVal;
       const hitsCurrent = hitsMax - dmg.STR - dmg.DEX - dmg.END;
       // 착용 중인 장갑 protection 합산
@@ -321,10 +330,10 @@ export class TravellerTab {
           // mgt2e 기본 시스템 경로
           await actor.update({ [`system.characteristics.${cha}.damage`]: val });
         } else {
-          // traveller-chargen-sheet 플래그 폴백
-          const dmg = foundry.utils.deepClone(actor.getFlag('traveller-chargen-sheet', 'damage') ?? {});
+          // traveller-sheet-KR 플래그 폴백
+          const dmg = foundry.utils.deepClone(actor.getFlag('traveller-sheet-KR', 'damage') ?? {});
           dmg[cha] = val;
-          await actor.setFlag('traveller-chargen-sheet', 'damage', dmg);
+          await actor.setFlag('traveller-sheet-KR', 'damage', dmg);
         }
       });
     });
